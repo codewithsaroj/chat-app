@@ -27,6 +27,8 @@ io.on("connection", (socket) => {
   socket.on("set_username", (username) => {
     socket.username = username;
     console.log(`User joined: ${username}`);
+    io.emit("user_joined", `${username} has joined the chat`);
+    socket.emit("welcome_message", `Welcome ${username}!`);
   });
 
   socket.on("load_messages", async () => {

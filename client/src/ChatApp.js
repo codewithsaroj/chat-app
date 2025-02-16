@@ -20,9 +20,27 @@ function ChatApp() {
       setMessages(messagesFromDb);
     });
 
+    // Listen for when a new user joins
+    socket.on("user_joined", (message) => {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { user: "System", content: message },
+      ]);
+    });
+
+    // Listen for when a user leaves
+    socket.on("user_left", (message) => {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { user: "System", content: message },
+      ]);
+    });
+
     return () => {
       socket.off("receive_message");
       socket.off("load_messages");
+      socket.off("user_joined");
+      socket.off("user_left");
     };
   }, []);
 
